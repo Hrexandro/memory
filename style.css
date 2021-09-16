@@ -1,16 +1,33 @@
 body{
-    display:flex;
-    flex-direction: column;
-    align-items: center;  
+
     background:#2c9fd1;
-    color: white;
+
+}
+
+.clicked {
+    background:#f8d14c;
 }
 
 
 #central-area{
-    display:flex;
-    flex-direction:column;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 300px));
+    row-gap: 30px;
+    column-gap:40px;
 }
+
+.card{
+    margin: 20px;
+    position:relative;
+    border-radius: 10px; 
+    text-align: center;
+}
+
+.logo, .card-content {
+    max-width: 90%;
+    max-height: 90%;
+}
+
 
 .theme-button{
     margin:20px;
@@ -25,127 +42,10 @@ body{
 
 }
 
-.logo{
-    max-width: 90%;
-    max-height: 90%;
-}
+
+
 
 
 
 /* AAAAAAAAAAAAAAAAAAAAAAAAAAAa */
 
-
-#game-area{
-    width:60%;
-    margin-top:5%;
-    display:flex;
-    justify-content: space-between;
-    color:white;
-    
-}
-
-.ok-button{
-    color:rgb(233, 128, 128);
-    background-color: white;
-    border: none;
-    outline: none;
-    margin:5px;
-}
-
-::placeholder {
-    color:rgb(233, 128, 128);
-    opacity: 1; /* Firefox */
-  }
-
-#player-one-area, #player-two-area{
-    width:20%;
-}
-
-input[type=text]{
-    width:7.5vw;
-    border:none;
-    outline: none;
-    color:rgb(233, 128, 128);
-}
-
-h1{
-    margin:0;
-}
-
-p{
-    text-align: center;
-}
-
-
-.hidden{
-    visibility:hidden;
-}
-
-#center-column{
-    display:flex;
-    flex-direction:column;
-}
-#new-game-button, .gameplay-button{
-    align-self: center;
-    margin-top:10px;
-    color: rgb(233, 128, 128);
-    background-color:white;
-    border:none;
-    border-radius:7%;
-
-}
-
-#gameplay-picker{
-    display:flex;
-}
-
-.gameplay-button{
-    margin:20px;
-    width:4vw;
-    height:9vh;
-
-}
-
-.underlined{
-    text-decoration: underline;
-}
-
-#game-board{
-
-    place-items: center;
-    align-items: center;
-    text-align: center;
-    justify-items: center;
-    display: grid;
-    grid-template-columns: 50px 50px 50px;
-    grid-template-rows: 50px 50px 50px;
-
-}
-
-
-.appearing-symbol{
-    animation: lighten-up 0.2s linear;
-}
-
-.field{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background:white;
-    height:98%;
-    width:98%;
-    color:black;
-}
-
-@keyframes lighten-up {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-.winning-combination{
-    color: red;
-}
