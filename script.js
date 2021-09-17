@@ -1,7 +1,6 @@
 /*
 TO DO:
-limit choice to two cards at the same time
-if cards have the same class - remove them
+
 ensure that after removal the rest of the cards do not move
 cover cards until clicking
 animate turning cards
@@ -70,7 +69,7 @@ function ensureEventBubbling(situation){//
     console.log(`situation.target.getAttribute('class') is ${(situation.target.getAttribute('class'))}`)
     console.log(`situation.target.class is ${JSON.stringify(situation.target.class)}`)
     //console.log(`variable is ${variable}`)
-    if (situation.target.getAttribute('class')==="card-content"){//if the picture is clicked, bubble to the button
+    if (situation.target.getAttribute('class')==="card-content"||situation.target.getAttribute('class')==="logo"){//if the picture is clicked, bubble to the button
         console.log(`situation.target.parentNode is ${JSON.stringify(situation.target.parentNode)}`)
         return situation.target.parentNode;
     }
@@ -102,7 +101,8 @@ for (i=0;i<themeList.length;i++){//themeList=document.getElementsByClassName("th
 //     populateGame(pickedTheme);
 // }))
 
-let lastClickedCard;
+let firstClickedCard = null;
+let secondClickedCard = null;
 
 const centralArea = document.getElementById("central-area");
 
@@ -134,24 +134,50 @@ function populateGame(theme){
     let cards=document.getElementsByClassName('card')
     for (j=0;j<cards.length;j++){
         cards[j].addEventListener('click',(e)=>{
-            console.log(`lastClickedCard is ${JSON.stringify(lastClickedCard)}`)
+            
             console.log(e.target)
-            //lastClickedCard=e.target;
-            lastClickedCard=ensureEventBubbling(e);
-            console.log(`elastClickedCard is ${JSON.stringify(lastClickedCard)}`)
+            if (firstClickedCard===null){
+                firstClickedCard=ensureEventBubbling(e);
+                firstClickedCard.classList.toggle("clicked");
+            }
+            else if (secondClickedCard===null){
+                secondClickedCard=ensureEventBubbling(e);
+                secondClickedCard.classList.toggle("clicked");
 
-            lastClickedCard.classList.toggle("clicked");
+                if (firstClickedCard.getAttribute('class')==secondClickedCard.getAttribute('class')){
+                    firstClickedCard.remove();
+                    secondClickedCard.remove();
+                    firstClickedCard = null;
+                    secondClickedCard = null;
+                    console.log("check if game is finished should run");
+                    checkIfGameIsFinished();
+                }
+                else {//to later be changed into turning the cards back etc.
+                    firstClickedCard.classList.toggle("clicked");
+                    secondClickedCard.classList.toggle("clicked");
+                    firstClickedCard = null;
+                    secondClickedCard = null;
+
+                }
+            }
+
+            
+            
+            //console.log(`efirstClickedCard is ${JSON.stringify(firstClickedCard)}`)
+
+            
         })
     }
-    // iterateThrough(cards,null,addEventListener('click',(e)=>{
-    //     console.log(`lastClickedCard is ${lastClickedCard}`)
-    //     console.log(e.target)
-    //     lastClickedCard=ensureEventBubbling(e);;
-    //     console.log(`elastClickedCard is ${lastClickedCard}`)
-    //     lastClickedCard.classList.toggle("clicked");
-    // }))
+
 }
 document.createElement('button')
+
+
+function checkIfGameIsFinished(){
+    if (document.getElementsByClassName("card").length===0){
+        populateGame(pickedTheme);
+    }
+}
 
 
 //<button class="theme-button" id="Paw Patrol"><img class="logo" src="images/Paw Patrol/paw patrol dogues.png"></button>
