@@ -6,7 +6,6 @@ cover cards until clicking
 animate turning cards
 have the cards be uncover at the start and then turn into covered-mode
 
-
 button to reset to theme choice
 
 more themes:
@@ -15,6 +14,9 @@ Captain Claw
 Peppa Pig
 
 problems:
+
+- fi you click the same card twice, it gets removed because it has the same class
+- remove all that crap with flipping over and try to add it back step by step
 
 
 
@@ -187,7 +189,5 @@ function removeThemeButtons(){
        themeList[j].remove()
    }
 }
-
-
 
 

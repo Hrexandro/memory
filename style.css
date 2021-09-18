@@ -1,51 +1,101 @@
 body{
 
-    background:#2c9fd1;
+  background:#2c9fd1;
 
 }
 
 .clicked {
-    background:#f8d14c;
+  background:#f8d14c;
 }
 
 
 #central-area{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 300px));
-    row-gap: 30px;
-    column-gap:40px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 300px));
+  row-gap: 30px;
+  column-gap:40px;
 }
 
 .card{
-    margin: 20px;
-    position:relative;
-    border-radius: 10px; 
-    text-align: center;
+  margin: 20px;
+  position:relative;
+  border-radius: 10px; 
+  text-align: center;
 }
 
 .logo, .card-content {
-    max-width: 90%;
-    max-height: 90%;
+  max-width: 90%;
+  max-height: 90%;
 }
 
 
 .theme-button{
-    margin:20px;
-    width:30vw;
-    height:60vh;
-    align-self: center;
-    margin-top:10px;
-    color: #2c9fd1;
-    background-color:white;
-    border:none;
-    border-radius:7%;
+  margin:20px;
+  width:30vw;
+  height:60vh;
+  align-self: center;
+  margin-top:10px;
+  color: #2c9fd1;
+  background-color:white;
+  border:none;
+  border-radius:7%;
 
 }
 
 
 
+/* AAAAAAAAAAAAAAAAAAAAAAAAAAAa ANIMATING CARD FLIPPING - ADD THE HTML FROM https://www.w3schools.com/howto/howto_css_flip_card.asp
+ADJUST AS NECESSARY - E.G. CHANGE HOVER TO CLICKED STATE FOR THE BACK SIDE*/
 
+/* 
+flip-card -card-container - to create probably
+flip-card-inner - card
+flip-card-front - find some transparent picture or white or just size it up?
+flip card-back - the picture
 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa */
 
-/* AAAAAAAAAAAAAAAAAAAAAAAAAAAa */
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 200px;
+  border: 1px solid #f1f1f1;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
 
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+}
