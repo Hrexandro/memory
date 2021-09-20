@@ -111,11 +111,18 @@ const centralArea = document.getElementById("central-area");
 function populateGame(theme){
     console.log("populate game runs")
     function createCard(name){
-        let card = document.createElement('button');
-        card.classList.add("card")
-        card.classList.add(`${name}`)
-        card.innerHTML = `<img class="card-content" src="images/${theme}/${name}.png">`
-        centralArea.appendChild(card)
+        // let card = document.createElement('button');//no flip - worked at least
+        // card.classList.add("card")
+        // card.classList.add(`${name}`)
+        // card.innerHTML = `<img class="card-content" src="images/${theme}/${name}.png">`
+        // centralArea.appendChild(card)
+
+        let cardContainer = document.createElement('div');//no flip - worked at least
+        cardContainer.classList.add("card-container")
+        
+        cardContainer.innerHTML = `<button class="card ${name}"><img class="card-content" src="images/${theme}/${name}.png"></button>
+                                    <div></div>`
+        centralArea.appendChild(cardContainer)
     }
     console.log(`Theme is ${theme}`)
     if (theme==="Paw Patrol"){
