@@ -2,10 +2,7 @@
 TO DO:
 
 ensure that after removal the rest of the cards do not move
-cover cards until clicking
-animate turning cards
 have the cards be uncover at the start and then turn into covered-mode
-
 button to reset to theme choice
 
 more themes:
@@ -15,8 +12,8 @@ Peppa Pig
 
 problems:
 
-- fi you click the same card twice, it gets removed because it has the same class
-- remove all that crap with flipping over and try to add it back step by step
+- if you click another card too quickly, the transitionend event stops the uncovering
+- the cards move after removal, make sure they stay spaced as the game progresses
 
 
 
@@ -66,14 +63,19 @@ let themeList=document.getElementsByClassName("theme-button");
 
 function ensureEventBubbling(situation){//
     console.log("ensure bubbling runs")
-    console.log(situation)
-    console.log(situation.target)
+    //console.log(situation)
+    //console.log(situation.target)
     console.log(`situation.target.getAttribute('class') is ${(situation.target.getAttribute('class'))}`)
-    console.log(`situation.target.class is ${JSON.stringify(situation.target.class)}`)
+    //console.log(`situation.target.class is ${JSON.stringify(situation.target.class)}`)
     //console.log(`variable is ${variable}`)
-    if (situation.target.getAttribute('class')==="card-content"||situation.target.getAttribute('class')==="logo"){//if the picture is clicked, bubble to the button
-        console.log(`situation.target.parentNode is ${JSON.stringify(situation.target.parentNode)}`)
+    if (situation.target.getAttribute('class')==="card"||situation.target.getAttribute('class')==="logo"){//if the picture is clicked, bubble to the button
+        console.log(`situation.target.parentNode is ${situation.target.parentNode}; ${JSON.stringify(situation.target.parentNode)}`)
+        console.log(`situation.target.parentNode.getAttribute('class') is ${situation.target.parentNode.getAttribute('class')};`)
         return situation.target.parentNode;
+    }
+    else if (situation.target.getAttribute('class')==="card-content"){
+        console.log(`situation.target.parentNode.parentNode is ${JSON.stringify(situation.target.parentNode.parentNode)}`)
+        return situation.target.parentNode.parentNode;
     }
     else {
         console.log(`situation.target is ${JSON.stringify(situation.target)}`)
@@ -119,9 +121,9 @@ function populateGame(theme){
 
         let cardContainer = document.createElement('div');//no flip - worked at least
         cardContainer.classList.add("card-container")
-        
-        cardContainer.innerHTML = `<button class="card ${name}"><img class="card-content" src="images/${theme}/${name}.png"></button>
-                                    <div></div>`
+        cardContainer.classList.add(`${name}`)
+        cardContainer.innerHTML = `<button class="card"><img class="card-content card-back" src="images/${theme}/${name}.png"></button>
+                                    <div class="card-content card-front"></div>`
         centralArea.appendChild(cardContainer)
     }
     console.log(`Theme is ${theme}`)
@@ -143,17 +145,46 @@ function populateGame(theme){
     let cards=document.getElementsByClassName('card')
     for (j=0;j<cards.length;j++){
         cards[j].addEventListener('click',(e)=>{
-            
+            console.log('start of the event after the card is clidke')
+            console.log(e)
             console.log(e.target)
+
+
             if (firstClickedCard===null){
                 firstClickedCard=ensureEventBubbling(e);
-                firstClickedCard.classList.toggle("clicked");
+                firstClickedCard.querySelector('.card').classList.toggle("clicked");
             }
             else if (secondClickedCard===null){
                 secondClickedCard=ensureEventBubbling(e);
-                secondClickedCard.classList.toggle("clicked");
+                secondClickedCard.querySelector('.card').classList.toggle("clicked");
+            }
 
-                if (firstClickedCard.getAttribute('class')==secondClickedCard.getAttribute('class')){
+                // if (firstClickedCard.getAttribute('class')===secondClickedCard.getAttribute('class')){
+                //     firstClickedCard.remove();
+                //     secondClickedCard.remove();
+                //     firstClickedCard = null;
+                //     secondClickedCard = null;
+                //     console.log("check if game is finished should run");
+                //     checkIfGameIsFinished();
+                // }
+                // else {//to later be changed into turning the cards back etc.
+
+                //     firstClickedCard.querySelector('.card').classList.toggle("clicked");
+                //     secondClickedCard.querySelector('.card').classList.toggle("clicked");
+                //     firstClickedCard = null;
+                //     secondClickedCard = null;
+
+                // }
+
+
+            
+            
+            //console.log(`efirstClickedCard is ${JSON.stringify(firstClickedCard)}`)
+
+            
+        })
+        cards[j].addEventListener('transitionend',()=>{//!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
+                if (firstClickedCard.getAttribute('class')===secondClickedCard.getAttribute('class')){
                     firstClickedCard.remove();
                     secondClickedCard.remove();
                     firstClickedCard = null;
@@ -162,19 +193,13 @@ function populateGame(theme){
                     checkIfGameIsFinished();
                 }
                 else {//to later be changed into turning the cards back etc.
-                    firstClickedCard.classList.toggle("clicked");
-                    secondClickedCard.classList.toggle("clicked");
+
+                    firstClickedCard.querySelector('.card').classList.toggle("clicked");
+                    secondClickedCard.querySelector('.card').classList.toggle("clicked");
                     firstClickedCard = null;
                     secondClickedCard = null;
 
                 }
-            }
-
-            
-            
-            //console.log(`efirstClickedCard is ${JSON.stringify(firstClickedCard)}`)
-
-            
         })
     }
 
