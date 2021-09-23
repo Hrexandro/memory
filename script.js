@@ -1,9 +1,12 @@
 /*
 TO DO:
 
-ensure that after removal the rest of the cards do not move
+ensure that after removal the rest of the cards do not move - done but sorta not - they still move somewhat esp on smaller screens - set a fixed size of div?
 have the cards be uncover at the start and then turn into covered-mode
 button to reset to theme choice
+
+randomise card order
+add more pictures and then randomise them each time
 
 more themes:
 MLP
@@ -11,13 +14,6 @@ Captain Claw
 Peppa Pig
 
 problems:
-
-- if you click another card too quickly, the transitionend event stops the uncovering
-- the cards move after removal, make sure they stay spaced as the game progresses
-
-
-
-
 */
 
 const themes = (function () {
@@ -107,6 +103,7 @@ for (i=0;i<themeList.length;i++){//themeList=document.getElementsByClassName("th
 
 let firstClickedCard = null;
 let secondClickedCard = null;
+let transitions=0;//to stop transitionend firing too quickly, keeps track of the two running consecutively
 
 const centralArea = document.getElementById("central-area");
 
@@ -162,11 +159,13 @@ function populateGame(theme){
                 secondClickedCard=ensureEventBubbling(e);
                 secondClickedCard.querySelector('.card').classList.toggle("clicked");
             }
-
-            
         })
         cards[j].addEventListener('transitionend',()=>{//!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
-            if (secondClickedCard!==null){
+            transitions++
+            console.log("transitionend")
+            console.log(transitions)
+
+            if (secondClickedCard!==null&&transitions>1){//if the second card has been clicked and assigned to variable
                 if (firstClickedCard.getAttribute('class')===secondClickedCard.getAttribute('class')){
                     firstClickedCard.querySelector('.card').remove();
                     secondClickedCard.querySelector('.card').remove();
@@ -183,7 +182,7 @@ function populateGame(theme){
                     secondClickedCard = null;
 
                 }
-
+                transitions=0;
             }
         })
     }
@@ -194,6 +193,7 @@ document.createElement('button')
 
 function checkIfGameIsFinished(){
     if (document.getElementsByClassName("card").length===0){
+        document.getElementById("central-area").innerHTML="";
         populateGame(pickedTheme);
     }
 }
