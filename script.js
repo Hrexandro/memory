@@ -111,6 +111,8 @@ let secondClickedCard = null;
 const centralArea = document.getElementById("central-area");
 
 function populateGame(theme){
+
+    let number = 0;//so that each card has a unique number, and clicking the same card twice does not remove it
     console.log("populate game runs")
     function createCard(name){
         // let card = document.createElement('button');//no flip - worked at least
@@ -119,9 +121,11 @@ function populateGame(theme){
         // card.innerHTML = `<img class="card-content" src="images/${theme}/${name}.png">`
         // centralArea.appendChild(card)
 
-        let cardContainer = document.createElement('div');//no flip - worked at least
-        cardContainer.classList.add("card-container")
-        cardContainer.classList.add(`${name}`)
+        let cardContainer = document.createElement('div');
+        cardContainer.classList.add("card-container");
+        cardContainer.classList.add(`${name}`);
+        cardContainer.setAttribute('id',`${number}`);
+        number++;
         cardContainer.innerHTML = `<button class="card"><img class="card-content card-back" src="images/${theme}/${name}.png"></button>
                                     <div class="card-content card-front"></div>`
         centralArea.appendChild(cardContainer)
@@ -154,39 +158,18 @@ function populateGame(theme){
                 firstClickedCard=ensureEventBubbling(e);
                 firstClickedCard.querySelector('.card').classList.toggle("clicked");
             }
-            else if (secondClickedCard===null){
+            else if (secondClickedCard===null && ensureEventBubbling(e).getAttribute('class')!=="card-content card-back"){//the second one ensures the same card is not used twice
                 secondClickedCard=ensureEventBubbling(e);
                 secondClickedCard.querySelector('.card').classList.toggle("clicked");
             }
 
-                // if (firstClickedCard.getAttribute('class')===secondClickedCard.getAttribute('class')){
-                //     firstClickedCard.remove();
-                //     secondClickedCard.remove();
-                //     firstClickedCard = null;
-                //     secondClickedCard = null;
-                //     console.log("check if game is finished should run");
-                //     checkIfGameIsFinished();
-                // }
-                // else {//to later be changed into turning the cards back etc.
-
-                //     firstClickedCard.querySelector('.card').classList.toggle("clicked");
-                //     secondClickedCard.querySelector('.card').classList.toggle("clicked");
-                //     firstClickedCard = null;
-                //     secondClickedCard = null;
-
-                // }
-
-
-            
-            
-            //console.log(`efirstClickedCard is ${JSON.stringify(firstClickedCard)}`)
-
             
         })
         cards[j].addEventListener('transitionend',()=>{//!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
+            if (secondClickedCard!==null){
                 if (firstClickedCard.getAttribute('class')===secondClickedCard.getAttribute('class')){
-                    firstClickedCard.remove();
-                    secondClickedCard.remove();
+                    firstClickedCard.querySelector('.card').remove();
+                    secondClickedCard.querySelector('.card').remove();
                     firstClickedCard = null;
                     secondClickedCard = null;
                     console.log("check if game is finished should run");
@@ -200,6 +183,8 @@ function populateGame(theme){
                     secondClickedCard = null;
 
                 }
+
+            }
         })
     }
 
@@ -212,9 +197,6 @@ function checkIfGameIsFinished(){
         populateGame(pickedTheme);
     }
 }
-
-
-//<button class="theme-button" id="Paw Patrol"><img class="logo" src="images/Paw Patrol/paw patrol dogues.png"></button>
 
 function removeThemeButtons(){
    for (j=0;j<themeList.length;j++){
