@@ -108,6 +108,9 @@ let transitions=0;//to stop transitionend firing too quickly, keeps track of the
 const centralArea = document.getElementById("central-area");
 
 function populateGame(theme){
+    function countInArray(array, what) {
+        return array.filter(item => item == what).length;
+    }
 
     let number = 0;//so that each card has a unique number, and clicking the same card twice does not remove it
     console.log("populate game runs")
@@ -129,20 +132,44 @@ function populateGame(theme){
     }
     console.log(`Theme is ${theme}`)
     if (theme==="Paw Patrol"){
-        createCard('chase');
-        createCard('skye');
-        createCard('marshall');
-        createCard('rocky');
-        createCard('zuma');
-        createCard('rubble');
-//double
-        createCard('chase');
-        createCard('skye');
-        createCard('marshall');
-        createCard('rocky');
-        createCard('zuma');
-        createCard('rubble');
+        let characters = ["chase","skye","marshall","rocky","zuma", "rubble"];
+        let charactersAdded=[];
+        //let num = 0;
+
+        while (charactersAdded.length<characters.length*2){
+            random=Math.floor(Math.random()*characters.length);
+
+            if (countInArray(charactersAdded,characters[random])<2){
+                charactersAdded.push(characters[random]);
+                createCard(characters[random]);
+            }
+            console.log(charactersAdded)
+
+        }
+
+
     }
+
+        // if (contents[random]!="selected"){
+        //     document.write(contents[random]+spacing)
+        //     //mark element as selected
+        //     contents[random]="selected"
+        //     i++
+        // }
+//         createCard('chase');
+//         createCard('skye');
+//         createCard('marshall');
+//         createCard('rocky');
+//         createCard('zuma');
+//         createCard('rubble');
+// //double
+//         createCard('chase');
+//         createCard('skye');
+//         createCard('marshall');
+//         createCard('rocky');
+//         createCard('zuma');
+//         createCard('rubble');
+    
     let cards=document.getElementsByClassName('card')
     for (j=0;j<cards.length;j++){
         cards[j].addEventListener('click',(e)=>{
