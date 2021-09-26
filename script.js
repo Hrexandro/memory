@@ -1,18 +1,14 @@
 /*
 TO DO:
-
 ensure that after removal the rest of the cards do not move - done but sorta not - they still move somewhat esp on smaller screens - set a fixed size of div?
 have the cards be uncover at the start and then turn into covered-mode
 button to reset to theme choice
-
 randomise card order
 add more pictures and then randomise them each time
-
 more themes:
 MLP
 Captain Claw
 Peppa Pig
-
 problems:
 */
 
@@ -230,5 +226,3 @@ function removeThemeButtons(){
        themeList[j].remove()
    }
 }
-
-

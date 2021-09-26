@@ -1,7 +1,7 @@
 body{
 
   background:#2c9fd1;
-
+  height: 90vh;
 }
 
 .clicked {
@@ -10,19 +10,24 @@ body{
 
 
 #central-area{
+
+  
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 300px));
+  grid-template-columns: repeat(auto-fit, 20%);
+  grid-template-rows: repeat(auto-fit, 25%);
   row-gap: 30px;
   column-gap:40px;
+  height: calc(50vw - 5px);
 }
 
 .card{
+
   margin: 20px;
   position:relative;
   border-radius: 10px; 
   text-align: center;
   /* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa */
-
+  display: block;
   width: 100%;
   height: 100%;
   position: relative;
@@ -35,12 +40,14 @@ body{
 
  .card-container {
   perspective: 600px;
+  
+  margin:10px;
 }
 
 .card-content {
-  
-  height: 90%;
-  width: 90%;
+ 
+  max-height: 90%;
+  max-width: 90%;
   backface-visibility: hidden;
 }
 
@@ -67,7 +74,7 @@ body{
   margin:20px;
   width:30vw;
   height:60vh;
-  align-self: center;
+  /* align-self: center; */
   margin-top:10px;
   color: #2c9fd1;
   background-color:white;
@@ -86,7 +93,6 @@ flip-card -card-container - to create probably
 flip-card-inner - card
 flip-card-front - find some transparent picture or white or just size it up?
 flip card-back - the picture
-
 AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa *//* AAAAAAAAAAAAAAAAAAAAAAAAAAAa */
 
 /* .card-container {
