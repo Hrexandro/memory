@@ -1,5 +1,17 @@
 /*
 TO DO:
+
+CSS - 
+MAKE THE CARDS FILL ALL AVAILABLE SPACE
+STAY SQUARE
+AVOID SCROLLBARS
+
+problem:
+transitionend still fires too fast if you click two fast one after another
+sometimes when you click second card nothing happens?
+
+after deletingthey still move around
+
 ensure that after removal the rest of the cards do not move - done but sorta not - they still move somewhat esp on smaller screens - set a fixed size of div?
 have the cards be uncover at the start and then turn into covered-mode
 button to reset to theme choice
