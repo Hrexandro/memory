@@ -1,22 +1,14 @@
 /*
 TO DO:
 
-CSS - 
-MAKE THE CARDS FILL ALL AVAILABLE SPACE
-STAY SQUARE
-AVOID SCROLLBARS
+problem: after enough are deleted, theyy shift 
 
-problem:
-transitionend still fires too fast if you click two fast one after another
-sometimes when you click second card nothing happens?
-
-after deletingthey still move around
-
-ensure that after removal the rest of the cards do not move - done but sorta not - they still move somewhat esp on smaller screens - set a fixed size of div?
-have the cards be uncover at the start and then turn into covered-mode
 button to reset to theme choice
-randomise card order
+
 add more pictures and then randomise them each time
+
+ensure it is always sideways on mobile
+
 more themes:
 MLP
 Captain Claw
@@ -25,7 +17,6 @@ problems:
 */
 
 const themes = (function () {
-
 
     function themeMaker(name) {
         let theme = Object.create(themeMaker.proto);
@@ -38,10 +29,8 @@ const themes = (function () {
             return this.name;
         },
     }
-//create a script that takes the themes from the HTML theme buttons, and automatically creates a theme object
+    //create a script that takes the themes from the HTML theme buttons, and automatically creates a theme object
     let PawPatrol = themeMaker("Paw Patrol");
-
-
 
     return {
         PawPatrol,
@@ -50,7 +39,7 @@ const themes = (function () {
 })();
 let pickedTheme;
 
-let themeList=document.getElementsByClassName("theme-button");
+let themeList = document.getElementsByClassName("theme-button");
 //console.log(themeList[0].id)
 
 // function iterateThrough(list, func, method){//get rid of this
@@ -65,37 +54,37 @@ let themeList=document.getElementsByClassName("theme-button");
 //     }
 // }
 
-function ensureEventBubbling(situation){//
+function ensureEventBubbling(situation) {//
     console.log("ensure bubbling runs")
     //console.log(situation)
     //console.log(situation.target)
     console.log(`situation.target.getAttribute('class') is ${(situation.target.getAttribute('class'))}`)
     //console.log(`situation.target.class is ${JSON.stringify(situation.target.class)}`)
     //console.log(`variable is ${variable}`)
-    if (situation.target.getAttribute('class')==="card"||situation.target.getAttribute('class')==="logo"){//if the picture is clicked, bubble to the button
-        console.log(`situation.target.parentNode is ${situation.target.parentNode}; ${JSON.stringify(situation.target.parentNode)}`)
-        console.log(`situation.target.parentNode.getAttribute('class') is ${situation.target.parentNode.getAttribute('class')};`)
+    if (situation.target.getAttribute('class') === "card" || situation.target.getAttribute('class') === "logo") {//if the picture is clicked, bubble to the button
+        //console.log(`situation.target.parentNode is ${situation.target.parentNode}; ${JSON.stringify(situation.target.parentNode)}`)
+        //console.log(`situation.target.parentNode.getAttribute('class') is ${situation.target.parentNode.getAttribute('class')};`)
         return situation.target.parentNode;
     }
-    else if (situation.target.getAttribute('class')==="card-content"){
-        console.log(`situation.target.parentNode.parentNode is ${JSON.stringify(situation.target.parentNode.parentNode)}`)
+    else if (situation.target.getAttribute('class') === "card-content") {
+        //console.log(`situation.target.parentNode.parentNode is ${JSON.stringify(situation.target.parentNode.parentNode)}`)
         return situation.target.parentNode.parentNode;
     }
     else {
-        console.log(`situation.target is ${JSON.stringify(situation.target)}`)
+        //console.log(`situation.target is ${JSON.stringify(situation.target)}`)
         return situation.target;
     }
     //console.log(`variable is ${variable}`)
 }
 
-for (i=0;i<themeList.length;i++){//themeList=document.getElementsByClassName("theme-button");
-    themeList[i].addEventListener('click',(e)=>{
-        console.log(`pickedTheme is ${pickedTheme}`)
-        pickedTheme=ensureEventBubbling(e).id;
+for (i = 0; i < themeList.length; i++) {//themeList=document.getElementsByClassName("theme-button");
+    themeList[i].addEventListener('click', (e) => {
+        //console.log(`pickedTheme is ${pickedTheme}`)
+        pickedTheme = ensureEventBubbling(e).id;
         //pickedTheme=e.target.id;
-        console.log(`pickedTheme after ensure event bubbling is ${pickedTheme}`)
-        removeThemeButtons(); 
-    
+        //console.log(`pickedTheme after ensure event bubbling is ${pickedTheme}`)
+        removeThemeButtons();
+
         populateGame(pickedTheme);
     })
 }
@@ -111,18 +100,18 @@ for (i=0;i<themeList.length;i++){//themeList=document.getElementsByClassName("th
 
 let firstClickedCard = null;
 let secondClickedCard = null;
-let transitions=0;//to stop transitionend firing too quickly, keeps track of the two running consecutively
+let transitions = 0;//to stop transitionend firing too quickly, keeps track of the two running consecutively
 
 const centralArea = document.getElementById("central-area");
 
-function populateGame(theme){
+function populateGame(theme) {
     function countInArray(array, what) {
         return array.filter(item => item == what).length;
     }
 
     let number = 0;//so that each card has a unique number, and clicking the same card twice does not remove it
     console.log("populate game runs")
-    function createCard(name){
+    function createCard(name) {
         // let card = document.createElement('button');//no flip - worked at least
         // card.classList.add("card")
         // card.classList.add(`${name}`)
@@ -132,22 +121,22 @@ function populateGame(theme){
         let cardContainer = document.createElement('div');
         cardContainer.classList.add("card-container");
         cardContainer.classList.add(`${name}`);
-        cardContainer.setAttribute('id',`${number}`);
+        cardContainer.setAttribute('id', `${number}`);
         number++;
         cardContainer.innerHTML = `<button class="card"><img class="card-content card-back" src="images/${theme}/${name}.png"></button>
                                     <div class="card-content card-front"></div>`
         centralArea.appendChild(cardContainer)
     }
     console.log(`Theme is ${theme}`)
-    if (theme==="Paw Patrol"){
-        let characters = ["chase","skye","marshall","rocky","zuma", "rubble"];
-        let charactersAdded=[];
+    if (theme === "Paw Patrol") {
+        let characters = ["chase", "skye", "marshall", "rocky", "zuma", "rubble"];
+        let charactersAdded = [];
         //let num = 0;
 
-        while (charactersAdded.length<characters.length*2){
-            random=Math.floor(Math.random()*characters.length);
+        while (charactersAdded.length < characters.length * 2) {
+            random = Math.floor(Math.random() * characters.length);
 
-            if (countInArray(charactersAdded,characters[random])<2){
+            if (countInArray(charactersAdded, characters[random]) < 2) {
                 charactersAdded.push(characters[random]);
                 createCard(characters[random]);
             }
@@ -157,84 +146,97 @@ function populateGame(theme){
 
 
     }
-
-        // if (contents[random]!="selected"){
-        //     document.write(contents[random]+spacing)
-        //     //mark element as selected
-        //     contents[random]="selected"
-        //     i++
-        // }
-//         createCard('chase');
-//         createCard('skye');
-//         createCard('marshall');
-//         createCard('rocky');
-//         createCard('zuma');
-//         createCard('rubble');
-// //double
-//         createCard('chase');
-//         createCard('skye');
-//         createCard('marshall');
-//         createCard('rocky');
-//         createCard('zuma');
-//         createCard('rubble');
-    
-    let cards=document.getElementsByClassName('card')
-    for (j=0;j<cards.length;j++){
-        cards[j].addEventListener('click',(e)=>{
-            console.log('start of the event after the card is clidke')
-            console.log(e)
-            console.log(e.target)
+    let cards = document.getElementsByClassName('card')
+    for (j = 0; j < cards.length; j++) {
 
 
-            if (firstClickedCard===null){
-                firstClickedCard=ensureEventBubbling(e);
+        cards[j].addEventListener('click', (e) => {
+            //console.log('start of the event after the card is clidke')
+            //console.log(e)
+            //console.log(e.target)
+            if (firstClickedCard === null) {
+                firstClickedCard = ensureEventBubbling(e);
                 firstClickedCard.querySelector('.card').classList.toggle("clicked");
             }
-            else if (secondClickedCard===null && ensureEventBubbling(e).getAttribute('class')!=="card-content card-back"){//the second one ensures the same card is not used twice
-                secondClickedCard=ensureEventBubbling(e);
+            else if (secondClickedCard === null && ensureEventBubbling(e).getAttribute('class') !== "card-content card-back") {//the second one ensures the same card is not used twice
+                secondClickedCard = ensureEventBubbling(e);
                 secondClickedCard.querySelector('.card').classList.toggle("clicked");
             }
         })
-        cards[j].addEventListener('transitionend',()=>{//!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
-            transitions++
+        cards[j].addEventListener('transitionend', () => {//!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
+            transitions++//ensure both ends are fired
             console.log("transitionend")
-            console.log(transitions)
+            console.log(`transitons: ${transitions}`)
 
-            if (secondClickedCard!==null&&transitions>1){//if the second card has been clicked and assigned to variable
-                if (firstClickedCard.getAttribute('class')===secondClickedCard.getAttribute('class')){
-                    firstClickedCard.querySelector('.card').remove();
-                    secondClickedCard.querySelector('.card').remove();
-                    firstClickedCard = null;
-                    secondClickedCard = null;
-                    console.log("check if game is finished should run");
-                    checkIfGameIsFinished();
-                }
-                else {//to later be changed into turning the cards back etc.
+            if (secondClickedCard !== null && transitions > 1) {//if the second card has been clicked and assigned to variable
+                setTimeout(function () {//don't do that too fast
+                    if (firstClickedCard.getAttribute('class') === secondClickedCard.getAttribute('class')) {
+                        firstClickedCard.querySelector('.card').remove();
+                        secondClickedCard.querySelector('.card').remove();
+                        firstClickedCard = null;
+                        secondClickedCard = null;
+                        console.log("check if game is finished should run");
+                        checkIfGameIsFinished();
+                    }
+                    else {//to later be changed into turning the cards back etc.
 
-                    firstClickedCard.querySelector('.card').classList.toggle("clicked");
-                    secondClickedCard.querySelector('.card').classList.toggle("clicked");
-                    firstClickedCard = null;
-                    secondClickedCard = null;
+                        firstClickedCard.querySelector('.card').classList.toggle("clicked");
+                        secondClickedCard.querySelector('.card').classList.toggle("clicked");
+                        firstClickedCard = null;
+                        secondClickedCard = null;
 
-                }
-                transitions=0;
+                    }
+                    transitions = 0;
+
+                }, 500);
             }
+
+
         })
+
+    }
+
+    let presentation = setInterval(uncover, 500);
+    let presentationCounter = 0;
+    function uncover() {
+        console.log("TEST");
+        console.log(presentationCounter > cards.length)
+        if (presentationCounter >= cards.length) {
+            console.log("should stop");
+
+            setTimeout(function(){
+                for (l = 0; l < cards.length; l++) {
+                    cards[l].classList.toggle("clicked");
+                }
+            }, 1000);
+            stopPresentation();
+        }
+        else {
+            cards[presentationCounter].classList.toggle("clicked");
+            presentationCounter++;
+        }
+
+    }
+
+
+
+    function stopPresentation() {
+        clearInterval(presentation);
     }
 
 }
 document.createElement('button')
 
 
-function checkIfGameIsFinished(){
-    if (document.getElementsByClassName("card").length===0){
-        document.getElementById("central-area").innerHTML="";
+function checkIfGameIsFinished() {
+    if (document.getElementsByClassName("card").length === 0) {
+        document.getElementById("central-area").innerHTML = "";
         populateGame(pickedTheme);
     }
 }
 
-function removeThemeButtons(){
-   for (j=0;j<themeList.length;j++){
-       themeList[j].remove()
-   }
+function removeThemeButtons() {
+    for (j = 0; j < themeList.length; j++) {
+        themeList[j].remove()
+    }
 }
