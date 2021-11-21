@@ -1,6 +1,9 @@
 /*
 TO DO:
 
+GET TO RESET TRANSITIONEND TO ZERO AFTER UNCOVERING ALL THE CARDS, PERHAPS PUT ANOTHER SET INTERVAL A BIT LONGER THAN THE COVERING BACK AND THE FUCKTION WPOULD JUST
+RESET THE INTERVAL TOZ ERO
+
 problem: after enough are deleted, theyy shift 
 
 button to reset to theme choice
@@ -9,14 +12,21 @@ add more pictures and then randomise them each time
 
 ensure it is always sideways on mobile
 
+ADD reset button
+
 more themes:
 MLP
 Captain Claw
 Peppa Pig
 problems:
+
+BUG: 
+
+
+
 */
 
-const themes = (function () {
+const themes = (function() {
 
     function themeMaker(name) {
         let theme = Object.create(themeMaker.proto);
@@ -25,11 +35,11 @@ const themes = (function () {
     }
 
     themeMaker.proto = {
-        getName: function () {
-            return this.name;
-        },
-    }
-    //create a script that takes the themes from the HTML theme buttons, and automatically creates a theme object
+            getName: function() {
+                return this.name;
+            },
+        }
+        //create a script that takes the themes from the HTML theme buttons, and automatically creates a theme object
     let PawPatrol = themeMaker("Paw Patrol");
 
     return {
@@ -54,30 +64,28 @@ let themeList = document.getElementsByClassName("theme-button");
 //     }
 // }
 
-function ensureEventBubbling(situation) {//
+function ensureEventBubbling(situation) { //
     console.log("ensure bubbling runs")
-    //console.log(situation)
-    //console.log(situation.target)
+        //console.log(situation)
+        //console.log(situation.target)
     console.log(`situation.target.getAttribute('class') is ${(situation.target.getAttribute('class'))}`)
-    //console.log(`situation.target.class is ${JSON.stringify(situation.target.class)}`)
-    //console.log(`variable is ${variable}`)
-    if (situation.target.getAttribute('class') === "card" || situation.target.getAttribute('class') === "logo") {//if the picture is clicked, bubble to the button
+        //console.log(`situation.target.class is ${JSON.stringify(situation.target.class)}`)
+        //console.log(`variable is ${variable}`)
+    if (situation.target.getAttribute('class') === "card" || situation.target.getAttribute('class') === "logo") { //if the picture is clicked, bubble to the button
         //console.log(`situation.target.parentNode is ${situation.target.parentNode}; ${JSON.stringify(situation.target.parentNode)}`)
         //console.log(`situation.target.parentNode.getAttribute('class') is ${situation.target.parentNode.getAttribute('class')};`)
         return situation.target.parentNode;
-    }
-    else if (situation.target.getAttribute('class') === "card-content") {
+    } else if (situation.target.getAttribute('class') === "card-content") {
         //console.log(`situation.target.parentNode.parentNode is ${JSON.stringify(situation.target.parentNode.parentNode)}`)
         return situation.target.parentNode.parentNode;
-    }
-    else {
+    } else {
         //console.log(`situation.target is ${JSON.stringify(situation.target)}`)
         return situation.target;
     }
     //console.log(`variable is ${variable}`)
 }
 
-for (i = 0; i < themeList.length; i++) {//themeList=document.getElementsByClassName("theme-button");
+for (i = 0; i < themeList.length; i++) { //themeList=document.getElementsByClassName("theme-button");
     themeList[i].addEventListener('click', (e) => {
         //console.log(`pickedTheme is ${pickedTheme}`)
         pickedTheme = ensureEventBubbling(e).id;
@@ -100,8 +108,8 @@ for (i = 0; i < themeList.length; i++) {//themeList=document.getElementsByClassN
 
 let firstClickedCard = null;
 let secondClickedCard = null;
-let transitions = 0;//to stop transitionend firing too quickly, keeps track of the two running consecutively
-
+let transitions = 0; //to stop transitionend firing too quickly, keeps track of the two running consecutively
+let cards = null;
 const centralArea = document.getElementById("central-area");
 
 function populateGame(theme) {
@@ -109,8 +117,9 @@ function populateGame(theme) {
         return array.filter(item => item == what).length;
     }
 
-    let number = 0;//so that each card has a unique number, and clicking the same card twice does not remove it
+    let number = 0; //so that each card has a unique number, and clicking the same card twice does not remove it
     console.log("populate game runs")
+
     function createCard(name) {
         // let card = document.createElement('button');//no flip - worked at least
         // card.classList.add("card")
@@ -146,10 +155,45 @@ function populateGame(theme) {
 
 
     }
-    let cards = document.getElementsByClassName('card')
+    cards = document.getElementsByClassName('card')
+
+    let presentation = setInterval(uncover, 500);
+    let presentationCounter = 0;
+
+    function uncover() {
+        // console.log("TEST");
+        // console.log(presentationCounter > cards.length)
+        if (presentationCounter >= cards.length) {
+            console.log("should stop");
+            setTimeout(function() {
+                for (l = 0; l < cards.length; l++) {
+                    cards[l].classList.toggle("uncovered");
+                }
+
+            }, 900);
+            stopPresentation();
+            addCardClickability();
+
+        } else {
+            cards[presentationCounter].classList.toggle("uncovered");
+            presentationCounter++;
+        }
+        console.log("uncover end")
+        transitions = 0;
+    }
+
+
+
+    function stopPresentation() {
+        clearInterval(presentation);
+        console.log("stoppresentation end")
+    }
+
+}
+
+function addCardClickability() {
+
     for (j = 0; j < cards.length; j++) {
-
-
         cards[j].addEventListener('click', (e) => {
             //console.log('start of the event after the card is clidke')
             //console.log(e)
@@ -157,19 +201,18 @@ function populateGame(theme) {
             if (firstClickedCard === null) {
                 firstClickedCard = ensureEventBubbling(e);
                 firstClickedCard.querySelector('.card').classList.toggle("clicked");
-            }
-            else if (secondClickedCard === null && ensureEventBubbling(e).getAttribute('class') !== "card-content card-back") {//the second one ensures the same card is not used twice
+            } else if (secondClickedCard === null && ensureEventBubbling(e).getAttribute('class') !== "card-content card-back") { //the second one ensures the same card is not used twice
                 secondClickedCard = ensureEventBubbling(e);
                 secondClickedCard.querySelector('.card').classList.toggle("clicked");
             }
         })
-        cards[j].addEventListener('transitionend', () => {//!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
-            transitions++//ensure both ends are fired
+        cards[j].addEventListener('transitionend', () => { //!!!!!!!!!!!!!!!!! make sure the current transition ends because one blocks anothers!!!!!
+            transitions++ //ensure both ends are fired
             console.log("transitionend")
             console.log(`transitons: ${transitions}`)
 
-            if (secondClickedCard !== null && transitions > 1) {//if the second card has been clicked and assigned to variable
-                setTimeout(function () {//don't do that too fast
+            if (secondClickedCard !== null && transitions > 1) { //if the second card has been clicked and assigned to variable
+                setTimeout(function() { //don't do that too fast
                     if (firstClickedCard.getAttribute('class') === secondClickedCard.getAttribute('class')) {
                         firstClickedCard.querySelector('.card').remove();
                         secondClickedCard.querySelector('.card').remove();
@@ -177,8 +220,7 @@ function populateGame(theme) {
                         secondClickedCard = null;
                         console.log("check if game is finished should run");
                         checkIfGameIsFinished();
-                    }
-                    else {//to later be changed into turning the cards back etc.
+                    } else { //to later be changed into turning the cards back etc.
 
                         firstClickedCard.querySelector('.card').classList.toggle("clicked");
                         secondClickedCard.querySelector('.card').classList.toggle("clicked");
@@ -195,36 +237,9 @@ function populateGame(theme) {
         })
 
     }
-
-    let presentation = setInterval(uncover, 500);
-    let presentationCounter = 0;
-    function uncover() {
-        console.log("TEST");
-        console.log(presentationCounter > cards.length)
-        if (presentationCounter >= cards.length) {
-            console.log("should stop");
-
-            setTimeout(function(){
-                for (l = 0; l < cards.length; l++) {
-                    cards[l].classList.toggle("clicked");
-                }
-            }, 1000);
-            stopPresentation();
-        }
-        else {
-            cards[presentationCounter].classList.toggle("clicked");
-            presentationCounter++;
-        }
-
-    }
-
-
-
-    function stopPresentation() {
-        clearInterval(presentation);
-    }
-
+    console.log("addcardclickability end")
 }
+
 document.createElement('button')
 
 
