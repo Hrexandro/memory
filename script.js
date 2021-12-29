@@ -2,9 +2,7 @@
 TO DO:
 
 GET TO RESET TRANSITIONEND TO ZERO AFTER UNCOVERING ALL THE CARDS, PERHAPS PUT ANOTHER SET INTERVAL A BIT LONGER THAN THE COVERING BACK AND THE FUCKTION WPOULD JUST
-RESET THE INTERVAL TOZ ERO
-
-problem: after enough are deleted, theyy shift 
+RESET THE INTERVAL TOZ ERO - ok after coming back to this I don't really know what this problem is about 🤷
 
 button to reset to theme choice
 
@@ -172,12 +170,14 @@ function populateGame(theme) {
 
             }, 900);
             stopPresentation();
+            addSideButtons();// the reset button should be added after presentation, with a cool appearance animation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             addCardClickability();
 
         } else {
             cards[presentationCounter].classList.toggle("uncovered");
             presentationCounter++;
         }
+        
         console.log("uncover end")
         transitions = 0;
     }
@@ -188,6 +188,26 @@ function populateGame(theme) {
         clearInterval(presentation);
         console.log("stoppresentation end")
     }
+
+}
+
+function addSideButtons(){//finish this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    let sidePanel = document.createElement('div');
+    sidePanel.setAttribute('id','side-panel')
+    document.querySelector('body').appendChild(sidePanel);
+    
+    let resetButton = document.createElement('button');
+    resetButton.setAttribute('class','side-button');
+    //resetButton.setAttribute('id','side-button-one');
+    resetButton.innerText = "RESET";
+    sidePanel.appendChild(resetButton);
+
+
+    let returnButton = document.createElement('button');
+    returnButton.setAttribute('class','side-button');
+    //returnButton.setAttribute('id','side-button-two');
+    returnButton.innerText = "RETURN";
+    sidePanel.appendChild(returnButton);
 
 }
 

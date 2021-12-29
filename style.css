@@ -8,6 +8,14 @@ body {
     margin: auto;
 }
 
+#side-panel{
+  position: absolute;
+  top: 1vh;
+  left:1vw;
+}
+
+
+
 #central-area {
     height: 100%;
     display: grid;
