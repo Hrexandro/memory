@@ -214,8 +214,10 @@ function addCardClickability() {
             if (secondClickedCard !== null && transitions > 1) { //if the second card has been clicked and assigned to variable
                 setTimeout(function() { //don't do that too fast
                     if (firstClickedCard.getAttribute('class') === secondClickedCard.getAttribute('class')) {
-                        firstClickedCard.querySelector('.card').remove();
-                        secondClickedCard.querySelector('.card').remove();
+                        // firstClickedCard.querySelector('.card').remove();//instead of this, try to manipulate visibility
+                        // secondClickedCard.querySelector('.card').remove();//so that they will not shift after enough elements are removed
+                        firstClickedCard.querySelector('.card').setAttribute('class','removed-card')
+                        secondClickedCard.querySelector('.card').setAttribute('class','removed-card')
                         firstClickedCard = null;
                         secondClickedCard = null;
                         console.log("check if game is finished should run");

@@ -40,6 +40,10 @@ body {
     /* AAAAAAAAAAAAAAAAAAAAAAAAAAAa */
 }
 
+.removed-card{
+  visibility: hidden;
+}
+
 .card-container {
     perspective: 600px;
     margin: 10px;
