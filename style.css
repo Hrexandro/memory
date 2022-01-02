@@ -12,9 +12,20 @@ body {
   position: absolute;
   top: 1vh;
   left:1vw;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
-
+.side-button{
+  background: #2c9fd1;
+  border: 1px solid white;
+  /* border-radius: 21px;
+  font-size: 85%; */
+  color: white;
+  outline: none;
+  margin-top: 1em;
+}
 
 #central-area {
     height: 100%;

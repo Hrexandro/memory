@@ -201,14 +201,14 @@ function addSideButtons(){//finish this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //resetButton.setAttribute('id','side-button-one');
     resetButton.innerText = "RESET";
     sidePanel.appendChild(resetButton);
-
+    resetButton.classList.add('side-button')
 
     let returnButton = document.createElement('button');
     returnButton.setAttribute('class','side-button');
     //returnButton.setAttribute('id','side-button-two');
     returnButton.innerText = "RETURN";
     sidePanel.appendChild(returnButton);
-
+    returnButton.classList.add('side-button')
 }
 
 function addCardClickability() {
