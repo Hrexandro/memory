@@ -170,7 +170,9 @@ function populateGame(theme) {
 
             }, 900);
             stopPresentation();
-            addSideButtons();// the reset button should be added after presentation, with a cool appearance animation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (document.getElementsByClassName("side-button").length===0){
+                addSideButtons();// the reset button should be added after presentation, with a cool appearance animation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
             addCardClickability();
 
         } else {
@@ -195,20 +197,28 @@ function addSideButtons(){//finish this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     let sidePanel = document.createElement('div');
     sidePanel.setAttribute('id','side-panel')
     document.querySelector('body').appendChild(sidePanel);
-    
-    let resetButton = document.createElement('button');
-    resetButton.setAttribute('class','side-button');
-    //resetButton.setAttribute('id','side-button-one');
-    resetButton.innerText = "RESET";
-    sidePanel.appendChild(resetButton);
-    resetButton.classList.add('side-button')
 
-    let returnButton = document.createElement('button');
-    returnButton.setAttribute('class','side-button');
-    //returnButton.setAttribute('id','side-button-two');
-    returnButton.innerText = "RETURN";
-    sidePanel.appendChild(returnButton);
-    returnButton.classList.add('side-button')
+    function addSideButtonSingular(text){
+        let newButton = document.createElement('button');
+        newButton.setAttribute('class','side-button');
+        newButton.setAttribute('id',`${text}-button`);
+        newButton.innerText = `${text}`;
+        sidePanel.appendChild(newButton);
+        newButton.classList.add('side-button')
+    }
+
+    addSideButtonSingular("RESET");
+    addSideButtonSingular("RETURN");
+
+    let resetButton = document.getElementById("RESET-button");
+    let returnButton = document.getElementById("RETURN-button");
+
+    resetButton.addEventListener('click',()=>{
+        resetGame();
+    })
+    returnButton.addEventListener('click',()=>{
+        
+    })
 }
 
 function addCardClickability() {
@@ -264,11 +274,17 @@ function addCardClickability() {
 
 document.createElement('button')
 
+function resetGame(){
+    document.getElementById("central-area").innerHTML = "";
+    populateGame(pickedTheme);
+}
+
 
 function checkIfGameIsFinished() {
     if (document.getElementsByClassName("card").length === 0) {
-        document.getElementById("central-area").innerHTML = "";
-        populateGame(pickedTheme);
+        resetGame();
+        // document.getElementById("central-area").innerHTML = "";
+        // populateGame(pickedTheme);
     }
 }
 

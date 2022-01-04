@@ -27,6 +27,10 @@ body {
   margin-top: 1em;
 }
 
+.side-button:hover{
+  cursor: pointer;
+}
+
 #central-area {
     height: 100%;
     display: grid;
