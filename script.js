@@ -9,7 +9,7 @@ button to reset to theme choice
 add more pictures and then randomise them each time
 
 ensure it is always sideways on mobile
-
+add soud effects - characters saying their catchphrases
 ADD reset button
 
 more themes:
@@ -20,7 +20,7 @@ problems:
 
 BUG: 
 
-
+clicking reset game during presentation makes it go crazy - solution - disable the button during presentation or remove it altogether
 
 */
 
@@ -46,7 +46,7 @@ const themes = (function() {
     }
 })();
 let pickedTheme;
-
+const frontPage = document.getElementById("central-area").innerHTML;
 let themeList = document.getElementsByClassName("theme-button");
 //console.log(themeList[0].id)
 
@@ -83,18 +83,22 @@ function ensureEventBubbling(situation) { //
     //console.log(`variable is ${variable}`)
 }
 
-for (i = 0; i < themeList.length; i++) { //themeList=document.getElementsByClassName("theme-button");
-    themeList[i].addEventListener('click', (e) => {
-        //console.log(`pickedTheme is ${pickedTheme}`)
-        pickedTheme = ensureEventBubbling(e).id;
-        //pickedTheme=e.target.id;
-        //console.log(`pickedTheme after ensure event bubbling is ${pickedTheme}`)
-        removeThemeButtons();
 
-        populateGame(pickedTheme);
-    })
+function addThemeListClickability(){
+    for (i = 0; i < themeList.length; i++) { //themeList=document.getElementsByClassName("theme-button");
+        themeList[i].addEventListener('click', (e) => {
+            //console.log(`pickedTheme is ${pickedTheme}`)
+            pickedTheme = ensureEventBubbling(e).id;
+            //pickedTheme=e.target.id;
+            //console.log(`pickedTheme after ensure event bubbling is ${pickedTheme}`)
+            removeThemeButtons();
+    
+            populateGame(pickedTheme);
+        })
+    }
+
 }
-
+addThemeListClickability();
 // iterateThrough(themeList,null,addEventListener('click',(e)=>{
 //     console.log(`pickedTheme is ${pickedTheme}`)
 //     pickedTheme=ensureEventBubbling(e).id;
@@ -215,10 +219,23 @@ function addSideButtons(){//finish this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     resetButton.addEventListener('click',()=>{
         resetGame();
+
+        for (l = 0; l < cards.length; l++) {
+            cards[l].classList.remove("uncovered");
+        }
     })
     returnButton.addEventListener('click',()=>{
+        removeSideButtons();
+        //document.getElementById("central-area").innerHTML = '<button class="theme-button" id="Paw Patrol"><img class="logo" src="images/Paw Patrol/paw patrol dogues.png"></button>';
+        document.getElementById("central-area").innerHTML = frontPage;
         
+        addThemeListClickability();
+        //if the default front page changes, adjust also this (how to do that automatically?)
     })
+}
+
+function removeSideButtons(){
+    document.getElementById('side-panel').remove();
 }
 
 function addCardClickability() {
@@ -275,6 +292,7 @@ function addCardClickability() {
 document.createElement('button')
 
 function resetGame(){
+    removeSideButtons();
     document.getElementById("central-area").innerHTML = "";
     populateGame(pickedTheme);
 }
