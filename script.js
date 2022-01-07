@@ -11,6 +11,7 @@ add more pictures and then randomise them each time
 ensure it is always sideways on mobile
 add soud effects - characters saying their catchphrases
 ADD reset button
+add cards appearing animations
 
 more themes:
 MLP
@@ -202,17 +203,18 @@ function addSideButtons(){//finish this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     sidePanel.setAttribute('id','side-panel')
     document.querySelector('body').appendChild(sidePanel);
 
-    function addSideButtonSingular(text){
+    function addSideButtonSingular(text, image){
         let newButton = document.createElement('button');
         newButton.setAttribute('class','side-button');
         newButton.setAttribute('id',`${text}-button`);
-        newButton.innerText = `${text}`;
+        //newButton.innerText = `${text}`;
+        newButton.innerHTML = `<img src="${image}" class="side-icon" alt="${text} button">`
         sidePanel.appendChild(newButton);
         newButton.classList.add('side-button')
     }
 
-    addSideButtonSingular("RESET");
-    addSideButtonSingular("RETURN");
+    addSideButtonSingular("RESET","images/play-blue.png");
+    addSideButtonSingular("RETURN","images/arrow-blue.png");
 
     let resetButton = document.getElementById("RESET-button");
     let returnButton = document.getElementById("RETURN-button");
