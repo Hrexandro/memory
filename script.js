@@ -296,8 +296,6 @@ function addCardClickability() {
 
                 }, 500);
             }
-
-
         })
 
     }
