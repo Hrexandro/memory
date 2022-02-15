@@ -291,7 +291,6 @@ function addCardClickability() {
                         secondClickedCard.querySelector('.card').classList.toggle("clicked");
                         firstClickedCard = null;
                         secondClickedCard = null;
-
                     }
                     transitions = 0;
 
