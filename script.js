@@ -40,9 +40,10 @@ const themes = (function() {
         }
         //create a script that takes the themes from the HTML theme buttons, and automatically creates a theme object
     let PawPatrol = themeMaker("Paw Patrol");
-
+    let MyLittlePony = themeMaker("My Little Pony");
     return {
         PawPatrol,
+        MyLittlePony,
         //themeList,
     }
 })();
@@ -145,7 +146,7 @@ function populateGame(theme) {
         let charactersAdded = [];
         //let num = 0;
 
-        while (charactersAdded.length < characters.length * 2) {
+        while (charactersAdded.length < characters.length * 2) {//put this in a function and use in all ifs
             random = Math.floor(Math.random() * characters.length);
 
             if (countInArray(charactersAdded, characters[random]) < 2) {
@@ -155,8 +156,21 @@ function populateGame(theme) {
             console.log(charactersAdded)
 
         }
+    }
+    else if (theme === "My Little Pony"){
+        let characters = ["applejack", "fluttershy", "pinkiepie", "rainbowdash", "rarity", "twilightsparkle"];
+        let charactersAdded = [];
 
+        while (charactersAdded.length < characters.length * 2) {//put this in a function and use in all ifs
+            random = Math.floor(Math.random() * characters.length);
 
+            if (countInArray(charactersAdded, characters[random]) < 2) {
+                charactersAdded.push(characters[random]);
+                createCard(characters[random]);
+            }
+            console.log(charactersAdded)
+
+        }
     }
     cards = document.getElementsByClassName('card')
 
@@ -309,7 +323,9 @@ function checkIfGameIsFinished() {
 }
 
 function removeThemeButtons() {
-    for (j = 0; j < themeList.length; j++) {
-        themeList[j].remove()
+    let counter = themeList.length
+    for (j = 0; j < counter; j++) {
+        console.log(themeList);
+        themeList[0].remove()
     }
 }
