@@ -104,6 +104,8 @@ width:5em;
 .card-container {
     perspective: 600px;
     margin: 10px;
+    max-width: 28vw;
+    max-height: 28vh;
 }
 
 .card-content {
@@ -128,18 +130,21 @@ width:5em;
 .logo {
     max-width: 90%;
     max-height: 90%;
+
 }
 
 .theme-button {
     margin: 20px;
-    width: 30vw;
-    height: 60vh;
+    max-width: 28vw;
+    max-height: 28vh;
     /* align-self: center; */
     margin-top: 10px;
     color: #2c9fd1;
     background-color: white;
     border: none;
     border-radius: 7%;
+    margin: 1em;
+
 }
 
 
