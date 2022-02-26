@@ -24,12 +24,14 @@ BUG:
 clicking reset game during presentation makes it go crazy - solution - disable the button during presentation or remove it altogether
 
 */
-
+let themeArray = [];
 const themes = (function() {
 
-    function themeMaker(name) {
+    function themeMaker(name, ...characters) {
         let theme = Object.create(themeMaker.proto);
         theme.name = name;
+        theme.characters = characters;
+        console.log(theme.characters)
         return theme;
     }
 
@@ -39,8 +41,10 @@ const themes = (function() {
             },
         }
         //create a script that takes the themes from the HTML theme buttons, and automatically creates a theme object
-    let PawPatrol = themeMaker("Paw Patrol");
-    let MyLittlePony = themeMaker("My Little Pony");
+    let PawPatrol = themeMaker("Paw Patrol", "chase", "skye", "marshall", "rocky", "zuma", "rubble");
+    themeArray.push(PawPatrol);
+    let MyLittlePony = themeMaker("My Little Pony", "applejack", "fluttershy", "pinkiepie", "rainbowdash", "rarity", "twilightsparkle");
+    themeArray.push(MyLittlePony);
     return {
         PawPatrol,
         MyLittlePony,
@@ -50,6 +54,7 @@ const themes = (function() {
 let pickedTheme;
 const frontPage = document.getElementById("central-area").innerHTML;
 let themeList = document.getElementsByClassName("theme-button");
+
 //console.log(themeList[0].id)
 
 // function iterateThrough(list, func, method){//get rid of this
@@ -90,25 +95,26 @@ function addThemeListClickability(){
     for (i = 0; i < themeList.length; i++) { //themeList=document.getElementsByClassName("theme-button");
         themeList[i].addEventListener('click', (e) => {
             //console.log(`pickedTheme is ${pickedTheme}`)
-            pickedTheme = ensureEventBubbling(e).id;
+            //pickedTheme = ensureEventBubbling(e).id;
+            let pickedButtonId = ensureEventBubbling(e).id
+            pickedTheme = themeArray.find(compareThemeObjectNameWithPickedButtonId);
+
+            function compareThemeObjectNameWithPickedButtonId(obj){
+                return obj.name === pickedButtonId;
+            }
+
+
             //pickedTheme=e.target.id;
             //console.log(`pickedTheme after ensure event bubbling is ${pickedTheme}`)
             removeThemeButtons();
     
-            populateGame(pickedTheme);
+            populateGame(pickedTheme.name);//change to pickedTheme.name when pickedTheme is changed to an object instead of just the string
         })
     }
 
 }
 addThemeListClickability();
-// iterateThrough(themeList,null,addEventListener('click',(e)=>{
-//     console.log(`pickedTheme is ${pickedTheme}`)
-//     pickedTheme=ensureEventBubbling(e).id;
-//     console.log(`pickedTheme after ensure event bubbling is ${pickedTheme}`)
-//     removeThemeButtons(); 
 
-//     populateGame(pickedTheme);
-// }))
 
 let firstClickedCard = null;
 let secondClickedCard = null;
@@ -141,24 +147,8 @@ function populateGame(theme) {
         centralArea.appendChild(cardContainer)
     }
     console.log(`Theme is ${theme}`)
-    if (theme === "Paw Patrol") {
-        let characters = ["chase", "skye", "marshall", "rocky", "zuma", "rubble"];
-        let charactersAdded = [];
-        //let num = 0;
-
-        while (charactersAdded.length < characters.length * 2) {//put this in a function and use in all ifs
-            random = Math.floor(Math.random() * characters.length);
-
-            if (countInArray(charactersAdded, characters[random]) < 2) {
-                charactersAdded.push(characters[random]);
-                createCard(characters[random]);
-            }
-            console.log(charactersAdded)
-
-        }
-    }
-    else if (theme === "My Little Pony"){
-        let characters = ["applejack", "fluttershy", "pinkiepie", "rainbowdash", "rarity", "twilightsparkle"];
+    function generateCardsBasedOnTheme(theme){
+        let characters = theme.characters;
         let charactersAdded = [];
 
         while (charactersAdded.length < characters.length * 2) {//put this in a function and use in all ifs
@@ -172,6 +162,38 @@ function populateGame(theme) {
 
         }
     }
+    generateCardsBasedOnTheme(pickedTheme);
+    // if (theme === "Paw Patrol") {
+    //     let characters = ["chase", "skye", "marshall", "rocky", "zuma", "rubble"];
+    //     let charactersAdded = [];
+    //     //let num = 0;
+
+    //     while (charactersAdded.length < characters.length * 2) {//put this in a function and use in all ifs
+    //         random = Math.floor(Math.random() * characters.length);
+
+    //         if (countInArray(charactersAdded, characters[random]) < 2) {
+    //             charactersAdded.push(characters[random]);
+    //             createCard(characters[random]);
+    //         }
+    //         console.log(charactersAdded)
+
+    //     }
+    // }
+    // else if (theme === "My Little Pony"){
+    //     let characters = ["applejack", "fluttershy", "pinkiepie", "rainbowdash", "rarity", "twilightsparkle"];
+    //     let charactersAdded = [];
+
+    //     while (charactersAdded.length < characters.length * 2) {//put this in a function and use in all ifs
+    //         random = Math.floor(Math.random() * characters.length);
+
+    //         if (countInArray(charactersAdded, characters[random]) < 2) {
+    //             charactersAdded.push(characters[random]);
+    //             createCard(characters[random]);
+    //         }
+    //         console.log(charactersAdded)
+
+    //     }
+    // }
     cards = document.getElementsByClassName('card')
 
     let presentation = setInterval(uncover, 500);
@@ -307,7 +329,7 @@ document.createElement('button')
 function resetGame(){
     removeSideButtons();
     document.getElementById("central-area").innerHTML = "";
-    populateGame(pickedTheme);
+    populateGame(pickedTheme.name);//depend on whether pickedTheme is a string or an object
 }
 
 
