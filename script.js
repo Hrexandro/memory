@@ -45,9 +45,12 @@ const themes = (function() {
     themeArray.push(PawPatrol);
     let MyLittlePony = themeMaker("My Little Pony", "applejack", "fluttershy", "pinkiepie", "rainbowdash", "rarity", "twilightsparkle");
     themeArray.push(MyLittlePony);
+    let ScoobyDoo = themeMaker("Scooby Doo", "scoobydoo", "scrappy", "shaggy", "fred", "velma", "daphne");
+    themeArray.push(ScoobyDoo);
     return {
         PawPatrol,
         MyLittlePony,
+        ScoobyDoo,
         //themeList,
     }
 })();
