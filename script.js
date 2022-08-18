@@ -42,17 +42,19 @@ const themes = (function() {
 
     }
 })();
-let pickedTheme;
+let pickedTheme = undefined;
 const frontPage = document.getElementById("central-area").innerHTML;
 let themeList = document.getElementsByClassName("theme-button");
 
 
 function ensureEventBubbling(situation) { //
+    console.log('ensure event bubbling runs')
     if (situation.target.getAttribute('class') === "card" || situation.target.getAttribute('class') === "logo") { //if the picture is clicked, bubble to the button
         return situation.target.parentNode;
     } else if (situation.target.getAttribute('class') === "card-content") {
         return situation.target.parentNode.parentNode;
-    } else {
+    } else if (situation.target.classList.contains("card-container") || situation.target.classList.contains("theme-button")){//to not bubble to random crap if sb clicks an image
+        console.log(situation.target)
         return situation.target;
     }
 }
@@ -169,6 +171,11 @@ function addSideButtons(){
         newButton.innerHTML = `<img src="${image}" class="side-icon" alt="${text} button">`
         sidePanel.appendChild(newButton);
         newButton.classList.add('side-button')
+        newButton.classList.add('invisible')
+        setTimeout(() => {
+            newButton.classList.remove('invisible');
+          }, "1000")
+
     }
 
     addSideButtonSingular("RESET","images/play-blue.png");
@@ -176,19 +183,26 @@ function addSideButtons(){
 
     let resetButton = document.getElementById("RESET-button");
     let returnButton = document.getElementById("RETURN-button");
-
+    function hideButtons(){
+        Array.from(document.getElementsByClassName('side-button')).forEach((item)=>{
+            item.classList.add('invisible')
+        })
+    }
     resetButton.addEventListener('click',()=>{
         resetGame();
-
+        
         for (l = 0; l < cards.length; l++) {
             cards[l].classList.remove("uncovered");
         }
     })
     returnButton.addEventListener('click',()=>{
-        removeSideButtons();
-        document.getElementById("central-area").innerHTML = frontPage;
-        
-        addThemeListClickability();
+        hideButtons()
+        setTimeout(() => {
+            removeSideButtons();
+            document.getElementById("central-area").innerHTML = frontPage;
+            pickedTheme = undefined;
+            addThemeListClickability();
+        }, "1200")
     })
 }
 
@@ -214,24 +228,23 @@ function addCardClickability() {
             console.log(`transitons: ${transitions}`)
 
             if (secondClickedCard !== null && transitions > 1) { //if the second card has been clicked and assigned to variable
-                setTimeout(function() { //don't do that too fast
-                    if (firstClickedCard.getAttribute('class') === secondClickedCard.getAttribute('class')) {
-                        firstClickedCard.querySelector('.card').setAttribute('class','removed-card')
-                        secondClickedCard.querySelector('.card').setAttribute('class','removed-card')
-                        firstClickedCard = null;
-                        secondClickedCard = null;
-                        console.log("check if game is finished should run");
-                        checkIfGameIsFinished();
-                    } else {
-
-                        firstClickedCard.querySelector('.card').classList.toggle("clicked");
-                        secondClickedCard.querySelector('.card').classList.toggle("clicked");
-                        firstClickedCard = null;
-                        secondClickedCard = null;
-                    }
-                    transitions = 0;
-
-                }, 500);
+                    setTimeout(function() { //don't do that too fast
+                        if (firstClickedCard.getAttribute('class') === secondClickedCard.getAttribute('class')) {
+                            firstClickedCard.querySelector('.card').setAttribute('class','removed-card')
+                            secondClickedCard.querySelector('.card').setAttribute('class','removed-card')
+                            firstClickedCard = null;
+                            secondClickedCard = null;
+                            console.log("check if game is finished should run");
+                            checkIfGameIsFinished();
+                        } else {
+    
+                            firstClickedCard.querySelector('.card').classList.toggle("clicked");
+                            secondClickedCard.querySelector('.card').classList.toggle("clicked");
+                            firstClickedCard = null;
+                            secondClickedCard = null;
+                        }
+                        transitions = 0;
+                    }, 500);
             }
         })
 
@@ -261,3 +274,11 @@ function removeThemeButtons() {
         themeList[0].remove()
     }
 }
+
+// centralArea.addEventListener('click',()=>{//bugavoider
+//     console.log('bugavoider runs')
+//     if (firstClickedCard === undefined && pickedTheme === undefined) {
+//         console.log("bug avoided")
+//         cards.classList.remove('clicked')
+//     }
+// })
