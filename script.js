@@ -35,10 +35,16 @@ const themes = (function() {
     themeArray.push(MyLittlePony);
     let ScoobyDoo = themeMaker("Scooby Doo", "scoobydoo", "scrappy", "shaggy", "fred", "velma", "daphne");
     themeArray.push(ScoobyDoo);
+    let Amphibia = themeMaker("Amphibia", "anne", "sprig", "polly", "hop", "marcy", "sasha");
+    themeArray.push(Amphibia);
+    let Cars = themeMaker("Cars", "lightning", "mater", "doc", "ivy", "guido", "sheriff");
+    themeArray.push(Cars);
     return {
         PawPatrol,
         MyLittlePony,
         ScoobyDoo,
+        Amphibia,
+        Cars,
 
     }
 })();
@@ -68,7 +74,7 @@ function addThemeListClickability(){
                 return obj.name === pickedButtonId;
             }
             removeThemeButtons();
-    
+            console.log(pickedTheme)
             populateGame(pickedTheme.name);
         })
     }
